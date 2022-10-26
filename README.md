@@ -1,7 +1,7 @@
 # docker-compose1
 services:
   db:
-    image: mysql:8.0.27
+    image: mysql:5.7
     volumes:
       - db_data:/var/lib/mysql
     restart: always
@@ -11,6 +11,8 @@ services:
       - MYSQL_USER=wordpress
       - MYSQL_PASSWORD=wordpress
   wordpress:
+   dependes_on:
+      -db
     image: wordpress:latest
     volumes:
       - wp_data:/var/www/html
@@ -18,10 +20,10 @@ services:
       - 8000:80
     restart: always
     environment:
-      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_HOST=db:3306
       - WORDPRESS_DB_USER=wordpress
       - WORDPRESS_DB_PASSWORD=wordpress
       - WORDPRESS_DB_NAME=wordpress
 volumes:
-  db_data:
-  wp_data:
+  db_data:{}
+  wp_data:{}
